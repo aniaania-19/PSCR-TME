@@ -1,4 +1,4 @@
-
+#include "List.h"
 namespace pr {
 
 // ******************* Chainon
@@ -12,7 +12,7 @@ size_t Chainon::length() {
 	return length();
 }
 
-void Chainon::print (std::ostream & os) {
+void Chainon::print(std::ostream & os) {
 	os << data ;
 	if (next != nullptr) {
 		os << ", ";
@@ -46,7 +46,8 @@ void List::push_front (const std::string& val) {
 }
 
 bool empty() {
-	return tete == nullptr;
+
+	return tete == nullptr;    // Erreur :pas reference le tete
 }
 
 size_t List::size() const {

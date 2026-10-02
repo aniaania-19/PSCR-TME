@@ -53,9 +53,9 @@ int main(int argc, char** argv) {
 			if (word.empty()) continue;
 
 			// word est maintenant "tout propre"
-			if (nombre_lu % 100 == 0)
-				// on affiche un mot "propre" sur 100
-				cout << nombre_lu << ": "<< word << endl;
+			//if (nombre_lu % 100 == 0)
+				//on affiche un mot "propre" sur 100
+				//cout << nombre_lu << ": "<< word << endl;
 			nombre_lu++;
 		}
 	input.close();
@@ -66,20 +66,49 @@ int main(int argc, char** argv) {
 		// skeleton for unique mode
 		// before the loop: declare a vector "seen"
 		// TODO
-
+		
+		std::vector<std::string> seen;
 		while (input >> word) {
 			// élimine la ponctuation et les caractères spéciaux
 			word = cleanWord(word);
 			if (word.empty()) continue;
+			
+			int found= 0;
+			
+			for(const string& current: seen){
+			if (word == current)
+			{
+			   found =1;
+			   break;
+			   }
+		        else {
+		           found =0;
+		           }
+		         
+		         }
+		         if (!found){
+		         seen.push_back(word);
+		         
+		         }
+		         
+		   
 
 			// add to seen if it is new
 			// TODO
 		}
 	input.close();
 	// TODO
-	// cout << "Found " << seen.size() << " unique words." << endl;
+	cout << "Found " << seen.size() << " unique words." << endl;
 
-	} else {
+	} else if(mode =="freq"){
+	
+	std::
+	
+	}
+	
+	
+	
+	else {
 		// unknown mode: print usage and exit
 		cerr << "Unknown mode '" << mode << "'. Supported modes: count, unique" << endl;
 		input.close();

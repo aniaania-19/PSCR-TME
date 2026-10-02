@@ -6,7 +6,11 @@ les dernières lignes, avec le temps d'exécution.
 
 ## Machine de mesure
 
-Collez ici le bloc produit par `./machine-info.sh`, puis complétez le contexte de mesure.
+Collez ici le bloc produit par 
+`./machine-info.sh`:
+
+
+ puis complétez le contexte de mesure.
 
 ## Question 1
 
@@ -17,10 +21,55 @@ $ ./build-debug/countword WarAndPeace.txt count
 565500: to
 Finished parsing.
 Found a total of 565527 words.
-Total runtime (wall clock) : 515 ms
+Total runtime (wall clock) : 1153 ms
+                                       
 ```
+                                       
+```
+$ ./build-release/countword WarAndPeace.txt count
+565500: to
+Finished parsing.
+Found a total of 565527 words.
+Total runtime (wall clock) : 111 ms
+                                       
+```
+Il y'a donc 565527 mots dans le livre
 
 ## Question 2
+
+Debug est bien plus lent que release , ce qui peut se comprendre car l'un veille a debuger pendant que l'autre tient la performance comme but premier 
+avec debug et trace:
+```
+Finished parsing.
+Found a total of 565527 words.
+Total runtime (wall clock) : 1179 ms
+```
+avec debug et sans trace:
+```
+┌──(ania㉿kali)-[~/PSCR-TME/TME2]
+└─$ ./build-debug/countword WarAndPeace.txt count
+Parsing WarAndPeace.txt (mode=count)
+Finished parsing.
+Found a total of 565527 words.
+Total runtime (wall clock) : 1061 ms
+                              
+
+avec release et trace
+565500: to
+Finished parsing.
+Found a total of 565527 words.
+Total runtime (wall clock) : 113 ms
+
+
+avec release sans trace:
+
+┌──(ania㉿kali)-[~/PSCR-TME/TME2]
+└─$ ./build-release/countword WarAndPeace.txt count
+Parsing WarAndPeace.txt (mode=count)
+Finished parsing.
+Found a total of 565527 words.
+Total runtime (wall clock) : 96 ms
+                                    
 
 ## Question 3
 

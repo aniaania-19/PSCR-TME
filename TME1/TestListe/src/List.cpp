@@ -12,7 +12,7 @@ size_t Chainon::length() {
 	return length();
 }
 
-void Chainon::print(std::ostream & os) {
+void Chainon::print(std::ostream & os) const { // il manque le const
 	os << data ;
 	if (next != nullptr) {
 		os << ", ";

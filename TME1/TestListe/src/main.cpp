@@ -24,7 +24,7 @@ int main () {
 	std::cout << "Taille : " << list.size() << std::endl;
 
 	// Affiche à l'envers
-	for (i= list.size() - 1 ; i >= 0 ; i--) {
+	for (i= list.size() - 1 ; i >= 0 ; i--) {    //list.size() est de type size_t , donc la condition sera toujours verifiée -> boucle infinie
 		std::cout << "elt " << i << ": " << list[i] << std::endl;
 	}
 

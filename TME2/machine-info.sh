@@ -1,47 +1,17 @@
 #!/usr/bin/env bash
-# Résumé à copier au début de answers.md ; aucune donnée d'identification personnelle.
-set -eu
+# Usage : ./machine-info.sh [dossier-de-build]   (défaut : build)
 export LC_ALL=C
-
-printf '## Machine de mesure\n\n```text\n'
-printf 'Date : %s\n' "$(date -u '+%Y-%m-%d %H:%M UTC')"
-printf 'Système : %s\n' "$(uname -srm)"
-if [ -r /etc/os-release ]; then
-    awk -F= '$1 == "PRETTY_NAME" {gsub(/"/, "", $2); print "Distribution : " $2}' /etc/os-release
-fi
-if command -v lscpu >/dev/null 2>&1; then
-    lscpu | awk -F: '
-        {value=$2; sub(/^[ \t]+/, "", value)}
-        /^Model name:/ {print "CPU : " value}
-        /^CPU\(s\):/ {print "CPU logiques (système) : " value}
-        /^Thread\(s\) per core:/ {print "Threads par cœur : " value}
-        /^Core\(s\) per socket:/ {print "Cœurs par socket : " value}
-        /^Socket\(s\):/ {print "Sockets : " value}
-        /^CPU max MHz:/ {print "Fréquence maximale annoncée (MHz) : " value; freq=1}
-        END {if (!freq) print "Fréquence maximale : non exposée par le système"}'
-    if command -v nproc >/dev/null 2>&1; then
-        printf 'CPU logiques disponibles pour ce processus : %s\n' "$(nproc)"
-    fi
-    if [ -r /proc/meminfo ]; then
-        awk '/^MemTotal:/ {printf "RAM visible : %.1f GiB\n", $2/1048576}' /proc/meminfo
-    fi
-elif [ "$(uname -s)" = Darwin ]; then
-    printf 'macOS : %s\n' "$(sw_vers -productVersion)"
-    printf 'CPU : %s\n' "$(sysctl -n machdep.cpu.brand_string 2>/dev/null || printf 'non disponible')"
-    printf 'Cœurs physiques : %s\n' "$(sysctl -n hw.physicalcpu)"
-    printf 'CPU logiques : %s\n' "$(sysctl -n hw.logicalcpu)"
-    hz=$(sysctl -n hw.cpufrequency_max 2>/dev/null || true)
-    if [ -n "$hz" ]; then
-        awk -v hz="$hz" 'BEGIN {printf "Fréquence maximale annoncée : %.2f GHz\n", hz/1e9}'
-    else
-        printf 'Fréquence maximale : non exposée par le système\n'
-    fi
-else
-    printf 'CPU et fréquence : à compléter manuellement\n'
-fi
-if command -v c++ >/dev/null 2>&1; then
-    c++ --version | sed -n '1s/^/Compilateur par défaut : /p'
-fi
-printf '```\n\n'
-printf 'À compléter : Debug/Release, machine native/VM/WSL/conteneur, charge concurrente.\n'
-printf 'La fréquence réelle varie avec la charge, le turbo et la température.\n'
+b=${1:-build}
+echo '## Machine de mesure'; echo; echo '```text'
+echo "OS : $(. /etc/os-release && echo "$PRETTY_NAME") ($(uname -srm))"
+echo "CPU : $(lscpu | awk -F: '/^Model name/ {gsub(/^ +/,"",$2); print $2}')"
+echo "Cœurs par socket : $(lscpu | awk '/^Core\(s\) per socket/ {print $NF}') x $(lscpu | awk '/^Socket\(s\)/ {print $NF}') socket(s)"
+echo "Processeurs logiques : $(nproc)"
+echo "RAM : $(free -h | awk '/Mem:/ {print $2}')"
+echo "Fréquence max (MHz) : $(lscpu | awk -F: '/CPU max MHz/ {gsub(/ /,"",$2); print $2}' | grep . || echo non exposée)"
+echo "Compilateur (c++) : $(c++ --version | head -n1)"
+echo "Compilateur CMake : $(grep CMAKE_CXX_COMPILER: $b/CMakeCache.txt 2>/dev/null | cut -d= -f2)"
+echo "Type de build : $(grep CMAKE_BUILD_TYPE: $b/CMakeCache.txt 2>/dev/null | cut -d= -f2)"
+echo "Virtualisation : $(systemd-detect-virt 2>/dev/null || echo inconnue) (none = native)"
+echo "Charge : $(cut -d' ' -f1-3 /proc/loadavg)"
+echo '```'

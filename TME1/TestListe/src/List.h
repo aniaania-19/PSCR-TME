@@ -33,9 +33,7 @@ public:
 
 	void push_back (const std::string& val) ;
 
-	void push_front (const std::string& val) {
-		tete = new Chainon(val,tete);
-	}
+	void push_front (const std::string& val);//Erreur: violation de la one definition rule 
 
 	bool empty() ;
 
@@ -43,7 +41,7 @@ public:
 };
 
 
-std::ostream & operator<< (std::ostream & os, const List & vec) ;
+std::ostream & operator<< (std::ostream & os, const List & vec) ; // FAUTE cette declaration est a l'exeterieur de la classe
 
 } /* namespace pr */
 

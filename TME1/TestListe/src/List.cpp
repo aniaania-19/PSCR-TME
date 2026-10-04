@@ -9,15 +9,16 @@ size_t Chainon::length() {
 	if (next != nullptr) {
 		len += next->length();
 	}
-	return length();
+	return len; //FAUTE: recursion infinie
 }
 
-void Chainon::print(std::ostream & os) const { // il manque le const
-	os << data ;
+void Chainon::print(std::ostream & os) const { //FAUTE: il manque le const
+	os << data ; 
 	if (next != nullptr) {
 		os << ", ";
+		next->print(os);
 	}
-	next->print(os);
+	//next->print(os);// FAUTE  il doit etre à l'interieur du if , sinnd on il s'executera toujours
 }
 
 // ******************  List
@@ -38,16 +39,15 @@ void List::push_back (const std::string& val) {
 			fin = fin->next;
 		}
 		fin->next = new Chainon(val);
-	}
-}
+	}}
 
-void List::push_front (const std::string& val) {
+void List::push_front(const std::string& val) {
 	tete = new Chainon(val,tete);
 }
 
-bool empty() {
+bool List::empty() {   //FAute: le compilateur considere empty comme une funct independante , donc il reconnait pas l'attribut tete
 
-	return tete == nullptr;    // Erreur :pas reference le tete
+	return tete == nullptr;  
 }
 
 size_t List::size() const {
@@ -58,9 +58,9 @@ size_t List::size() const {
 	}
 }
 
-} // namespace pr
 
-std::ostream & operator<< (std::ostream & os, const pr::List & vec)
+
+std::ostream & operator<< (std::ostream & os, const pr::List & vec)  // FAUTE : definition à l'exterireur du namespace
 {
 	os << "[";
 	if (vec.tete != nullptr) {
@@ -70,3 +70,5 @@ std::ostream & operator<< (std::ostream & os, const pr::List & vec)
 	return os;
 }
 
+
+} // namespace pr

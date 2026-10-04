@@ -7,13 +7,26 @@ namespace pr
 String::String (const char *s) : data(nullptr)
 {
   std::cout << "String constructor called for: " << s << std::endl;
+  if( s!=nullptr){
+    data=newcopy(data,s);
+
+  }
+  
 }
 
 String::~String ()
 {
   std::cout << "String destructor called for: " << (data ? data : "(null)")
       << std::endl;
-  // TODO
+    delete [] data;
+}
+
+String& string::operator=(const string & other){
+  if (this != other){
+    delete[] data;
+    str=newcopy(other.data);
+  }
+  return *this; 
 }
 
 // TODO : add other operators and functions

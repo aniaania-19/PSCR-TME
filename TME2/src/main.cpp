@@ -5,6 +5,7 @@
 #include <string>
 #include <algorithm>
 #include <vector>
+#include<utility>
 #include "FreqMap.h"
 
 // helper to clean a token (keep original comments near the logic)
@@ -17,6 +18,10 @@ static std::string cleanWord(const std::string& raw) {
 	std::transform(w.begin(), w.end(), w.begin(), ::tolower);
 	return w;
 }
+
+
+
+
 
 int main(int argc, char** argv) {
 	using namespace std;
@@ -100,12 +105,27 @@ int main(int argc, char** argv) {
 	// TODO
 	cout << "Found " << seen.size() << " unique words." << endl;
 
-	} else if(mode =="freq"){
-	
-	std::
-	
-	}
-	
+	} else if (mode == "freq") {
+    std::vector<std::pair<std::string,int>> count;
+    while (input >> word) {
+        word = cleanWord(word);
+        if (word.empty()) continue;
+        int found = 0;
+        for (auto& p : count) {
+            if (word == p.first) {
+                p.second++;
+                found = 1;
+                break;
+            }
+        }
+        if (!found) {
+            count.push_back({word, 1});
+        }
+    }
+    for (const auto& p : count) {
+        std::cout << p.first << " : " << p.second << std::endl;
+    }
+}
 	
 	
 	else {

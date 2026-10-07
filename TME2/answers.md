@@ -39,7 +39,7 @@ Il y'a donc 565527 mots dans le livre
 
 Debug est bien plus lent que release , ce qui peut se comprendre car l'un veille a debuger pendant que l'autre tient la performance comme but premier 
 avec debug et trace:
-```
+
 Finished parsing.
 Found a total of 565527 words.
 Total runtime (wall clock) : 1179 ms
@@ -72,6 +72,12 @@ Total runtime (wall clock) : 96 ms
                                     
 
 ## Question 3
+
+──(ania㉿kali)-[~/PSCR-TME/TME2]
+└─$ ./build-release/countword WarAndPeace.txt unique
+Parsing WarAndPeace.txt (mode=unique)
+Found 20332 unique words.
+Total runtime (wall clock) : 1436 ms
 
 ## Question 4
 

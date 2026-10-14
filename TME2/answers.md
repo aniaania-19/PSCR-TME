@@ -83,6 +83,20 @@ Total runtime (wall clock) : 1436 ms
 
 ## Question 5
 
+└─$ ./build-debug/countword WarAndPeace.txt freq
+Parsing WarAndPeace.txt (mode=freq)
+the:34562
+and:22148
+to:16709
+of:14990
+a:10513
+he:9809
+in:8800
+his:7965
+that:7806
+was:7327
+Total runtime (wall clock) : 10400 ms
+
 ## Question 6
 
 ## Question 7
@@ -90,5 +104,70 @@ Total runtime (wall clock) : 1436 ms
 ## Question 8
 
 ## Question 9
+comparaison entre les deux resultats:
+──(ania㉿kali)-[~/PSCR-TME/TME2]
+└─$ ./build-debug/countword WarAndPeace.txt freq    
+Parsing WarAndPeace.txt (mode=freq)
+the:34562
+and:22148
+to:16709
+of:14990
+a:10513
+he:9809
+in:8800
+his:7965
+that:7806
+was:7327
+Total runtime (wall clock) : 10660 ms
+                                                                                                                                                                                                                
+┌──(ania㉿kali)-[~/PSCR-TME/TME2]
+└─$ ./build-debug/countword WarAndPeace.txt freqhash
+Parsing WarAndPeace.txt (mode=freqhash)
+the:34562
+and:22148
+to:16709
+of:14990
+a:10513
+he:9809
+in:8800
+his:7965
+that:7806
+was:7327
+Total runtime (wall clock) : 1183 ms
+
+┌──(ania㉿kali)-[~/PSCR-TME/TME2]
+└─$ ./build-debug/countword WarAndPeace.txt freqhash
+Parsing WarAndPeace.txt (mode=freqhash)
+Total runtime (wall clock) : 1271 ms
+                                                                                                                                                                                                                
+┌──(ania㉿kali)-[~/PSCR-TME/TME2]
+└─$ ./build-debug/countword WarAndPeace.txt freq    
+Parsing WarAndPeace.txt (mode=freq)
+
+Total runtime (wall clock) : 11339 ms
+
+
+On remarque que plus la taille initiale de la table de hachage augmente, plus le temps d'exécution tend à diminuer. En effet, lorsque le nombre de buckets augmente, les collisions sont généralement moins nombreuses. Il y a donc moins d'entrées à parcourir dans chaque liste chaînée, ce qui accélère les recherches et les insertions.
+
+Mais comme notre table ne grandie jamais, les performances peuvent vite se degrader si le nombre d'entrée augmente.
+
+
+pour 10000 buckets:
+┌──(ania㉿kali)-[~/PSCR-TME/TME2]
+└─$ ./build-debug/countword WarAndPeace.txt freqhash
+Parsing WarAndPeace.txt (mode=freqhash)
+Total runtime (wall clock) : 1350 ms
+                                        
+Pour 1024 buckets:
+┌──(ania㉿kali)-[~/PSCR-TME/TME2]
+└─$ ./build-debug/countword WarAndPeace.txt freqhash
+Parsing WarAndPeace.txt (mode=freqhash)
+Total runtime (wall clock) : 1426 ms
+
+Pour 100 buckets:
+┌──(ania㉿kali)-[~/PSCR-TME/TME2]
+└─$ ./build-debug/countword WarAndPeace.txt freqhash
+Parsing WarAndPeace.txt (mode=freqhash)
+Total runtime (wall clock) : 2417 ms
 
 ## Question 10 (bonus)

@@ -8,6 +8,10 @@
 #include<utility>
 #include "FreqMap.h"
 
+
+using WordCount=std::pair<std::string,int> ;
+
+
 // helper to clean a token (keep original comments near the logic)
 static std::string cleanWord(const std::string& raw) {
 	// une regex qui reconnait les caractères anormaux (négation des lettres)
@@ -22,7 +26,18 @@ static std::string cleanWord(const std::string& raw) {
 
 
 
+void sortAndPrintTop(std::vector<WordCount> counts, size_t topN = 10){
+		std::sort(counts.begin(),counts.end(),[](const auto& a,const auto& b){
+			return a.second > b.second;
+		});
 
+		size_t limit= std::min(topN,counts.size());
+
+		for(size_t i=0;i<limit;++i){
+			std::cout << counts[i].first <<":" << counts[i].second << '\n';  
+		}
+
+	}
 int main(int argc, char** argv) {
 	using namespace std;
 	using namespace std::chrono;
@@ -46,6 +61,7 @@ int main(int argc, char** argv) {
 
 	// prochain mot lu
 	string word;
+
 
 	if (mode == "count") {
 		size_t nombre_lu = 0;
@@ -106,7 +122,7 @@ int main(int argc, char** argv) {
 	cout << "Found " << seen.size() << " unique words." << endl;
 
 	} else if (mode == "freq") {
-    std::vector<std::pair<std::string,int>> count;
+	std::vector<WordCount> count;
     while (input >> word) {
         word = cleanWord(word);
         if (word.empty()) continue;
@@ -120,12 +136,27 @@ int main(int argc, char** argv) {
         }
         if (!found) {
             count.push_back({word, 1});
-        }
+		}
+
     }
-    for (const auto& p : count) {
-        std::cout << p.first << " : " << p.second << std::endl;
-    }
+  //  for (const auto& p : count) {
+      //  std::cout << p.first << " : " << p.second << std::endl;
+    //}
+
+	sortAndPrintTop(count);
 }
+   else if(mode == "freqhash"){
+	FreqMap Freqmap(10000);
+	while (input >> word){
+		word=cleanWord(word);
+		if (word.empty()) continue;
+		Freqmap.incrementFrequency(word);
+	}
+	std::vector<WordCount> all=Freqmap.toKeyValuePairs();
+	sortAndPrintTop(all);
+
+
+   }
 	
 	
 	else {
@@ -134,6 +165,11 @@ int main(int argc, char** argv) {
 		input.close();
 		return 1;
 	}
+
+
+
+
+
 
 	// print a single total runtime for successful runs
 	auto end = steady_clock::now();

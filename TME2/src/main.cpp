@@ -146,7 +146,7 @@ int main(int argc, char** argv) {
 	sortAndPrintTop(count);
 }
    else if(mode == "freqhash"){
-	FreqMap Freqmap(10000);
+	FreqMap Freqmap(100);
 	while (input >> word){
 		word=cleanWord(word);
 		if (word.empty()) continue;

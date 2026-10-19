@@ -30,7 +30,6 @@ public:
     // TODO : void incrementFrequency(const std::string& word)
 
     void incrementFrequency(const std::string& word){
-        if()
         size_t indx= std::hash<std::string>{}(word) % Buckets_.size();
         for(WordCount &a : Buckets_[indx]){
             if(a.first == word){
@@ -64,15 +63,15 @@ public:
     // TODO (bonus) : void grow()
 
     void grow(){
-            FreqMap copy=FreqMap(2*Buckets_.size());
+            std::vector<Bucket> NewBuckets(2* Buckets_.size());
             for(size_t i=0;i<Buckets_.size();i++){
             for (const WordCount & a:Buckets_[i]){
-                size_t newIndex=std::hash<string>{}(a.first)%copy.size();
-                copy[newIndex].emplace_front(a);
+                size_t newIndex=std::hash<std::string>{}(a.first)%NewBuckets.size();
+                NewBuckets[newIndex].push_front(a);
             }
         }
 
-            Buckets_ = std::move(copy);
+            Buckets_ = std::move(NewBuckets);
 
     }
 

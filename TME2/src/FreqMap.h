@@ -68,7 +68,7 @@ public:
             for(size_t i=0;i<Buckets_.size();i++){
             for (const WordCount & a:Buckets_[i]){
                 size_t newIndex=std::hash<string>{}(a.first)%copy.size();
-                copy[newIndex].emplace_front(std::move(a));
+                copy[newIndex].emplace_front(a);
             }
         }
 
